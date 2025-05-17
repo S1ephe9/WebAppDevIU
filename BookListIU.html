@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List Application</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid rgb(255, 0, 0);
+            padding: 8px;
+            text-align: left;
+        }
+        form {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Book List</h2>
+<table id="bookTable">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Genre</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h3>Add or Update a Book</h3>
+<form id="bookForm">
+    <input type="text" id="title" placeholder="Title" required>
+    <input type="text" id="author" placeholder="Author" required>
+    <input type="number" id="year" placeholder="Year" required>
+    <input type="text" id="genre" placeholder="Genre" required>
+    <button type="submit">Save Book</button>
+</form>
+
+<script>
+    let books = [
+        { title: "1984", author: "George Orwell", year: 1949, genre: "Dystopian" },
+        { title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, genre: "Classic" },
+        { title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, genre: "Novel" }
+    ];
+
+    const bookTable = document.querySelector('#bookTable tbody');
+
+    const displayBooks = () => {
+        bookTable.innerHTML = '';
+        books.forEach((book, index) => {
+            const row = `<tr>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.year}</td>
+                            <td>${book.genre}</td>
+                            <td><button onclick="deleteBook(${index})">Delete</button></td>
+                        </tr>`;
+            bookTable.innerHTML += row;
+        });
+    };
+
+    const deleteBook = (index) => {
+        books.splice(index, 1);
+        displayBooks();
+    };
+
+    document.getElementById('bookForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newBook = {
+            title: document.getElementById('title').value,
+            author: document.getElementById('author').value,
+            year: parseInt(document.getElementById('year').value),
+            genre: document.getElementById('genre').value
+        };
+        books.push(newBook);
+        displayBooks();
+        e.target.reset();
+    });
+
+    displayBooks();
+</script>
+
+</body>
+</html> 
